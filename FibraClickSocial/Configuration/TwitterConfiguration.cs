@@ -2,12 +2,24 @@
 {
     class TwitterConfiguration : IValidatable
     {
+        /// <summary>
+        /// Twitter application key
+        /// </summary>
         public string ConsumerKey { get; set; }
 
+        /// <summary>
+        /// Twitter application secret
+        /// </summary>
         public string ConsumerSecret { get; set; }
 
+        /// <summary>
+        /// Access token for the user
+        /// </summary>
         public string AccessToken { get; set; }
 
+        /// <summary>
+        /// Secret token for the user
+        /// </summary>
         public string AccessTokenSecret { get; set; }
 
         public void Validate()

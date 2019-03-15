@@ -36,6 +36,13 @@ namespace FibraClickSocial.Services
 
             JObject parsed = JObject.Parse(content);
 
+            bool isValid = parsed.SelectToken("data.is_valid").ToObject<bool>();
+
+            if (!isValid)
+            {
+                throw new FacebookException($"Token is not valid (may be expired)");
+            }
+
             string type = parsed.SelectToken("data.type").ToString();
 
             if (type != "PAGE")

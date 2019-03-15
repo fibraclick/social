@@ -4,6 +4,9 @@ namespace FibraClickSocial.Configuration
 {
     class WholesaleConfiguration : IValidatable
     {
+        /// <summary>
+        /// URL of the resource that should be monitored
+        /// </summary>
         public Uri Url { get; set; }
 
         public void Validate()
