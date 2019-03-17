@@ -73,15 +73,15 @@ namespace FibraClickSocial.Services
 
                 string date = currentVersion.ToString("dd MMMM yyyy");
 
-                this.logger.LogInformation("Publishing on Telegram...");
+                this.logger.LogInformation("Publishing to Telegram...");
 
                 await PublishTelegram(date);
 
-                this.logger.LogInformation("Publishing on Facebook...");
+                this.logger.LogInformation("Publishing to Facebook...");
 
                 await PublishFacebook(date);
 
-                this.logger.LogInformation("Publishing on Twitter...");
+                this.logger.LogInformation("Publishing to Twitter...");
 
                 await PublishTwitter(date);
 

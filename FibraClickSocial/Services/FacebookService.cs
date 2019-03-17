@@ -1,6 +1,7 @@
 ﻿using FibraClickSocial.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -33,10 +34,15 @@ namespace FibraClickSocial.Services
 
         public async Task<string> VerifyCredentials()
         {
-            string url = string.Format(VERIFY_SCOPES_URL, this.config.AccessToken, this.config.AppId, this.config.AppSecret);
+            string url = string.Format(
+                VERIFY_SCOPES_URL,
+                this.config.AccessToken,
+                this.config.AppId,
+                this.config.AppSecret);
 
             HttpResponseMessage response = await this.client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+
+            await ManageError(response);
 
             string content = await response.Content.ReadAsStringAsync();
 
@@ -84,9 +90,20 @@ namespace FibraClickSocial.Services
                 { "access_token", this.config.AccessToken }
             };
 
-            var response = await this.client.PostAsync(PUBLISH_URL, new FormUrlEncodedContent(data));
+            HttpResponseMessage response =
+                await this.client.PostAsync(PUBLISH_URL, new FormUrlEncodedContent(data));
 
-            response.EnsureSuccessStatusCode();
+            await ManageError(response);
+        }
+
+        private async Task ManageError(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                string body = await response.Content.ReadAsStringAsync();
+
+                throw new Exception($"Facebook response error: {body.Replace('\n', '|')}");
+            }
         }
     }
 }
