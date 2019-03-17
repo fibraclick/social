@@ -19,6 +19,7 @@ namespace FibraClickSocial.Services
         private readonly CultureInfo culture = new CultureInfo("it-IT");
 
         private const string FILE_PATH = "version.txt";
+        private const double CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
         public SchedulerHostedService(IWholesaleService wholesale,
                                       ILogger<SchedulerHostedService> logger,
@@ -33,7 +34,17 @@ namespace FibraClickSocial.Services
             this.twitter = twitter;
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            var t = new System.Timers.Timer();
+            t.Elapsed += Tick;
+            t.Interval = CHECK_INTERVAL;
+            t.Start();
+
+            return RunCheck();
+        }
+
+        private async void Tick(object sender, System.Timers.ElapsedEventArgs e)
         {
             await RunCheck();
         }
