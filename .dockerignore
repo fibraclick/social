@@ -1,0 +1,10 @@
+.vs/
+bin/
+obj/
+README
+README.md
+LICENSE
+LICENSE.md
+.gitignore
+.gitattributes
+.git/
