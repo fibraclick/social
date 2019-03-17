@@ -1,8 +1,7 @@
 ﻿using FibraClickSocial.Configuration;
+using LinqToTwitter;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using OAuth;
-using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,56 +9,41 @@ namespace FibraClickSocial.Services
 {
     class TwitterService : ITwitterService
     {
-        private readonly HttpClient client;
-        private readonly TwitterConfiguration config;
+        private readonly TwitterContext client;
 
         private const string VERIFY_CREDENTIALS_URL =
             "https://api.twitter.com/1.1/account/verify_credentials.json";
 
+        private const string PUBLISH_URL =
+            "https://api.twitter.com/1.1/statuses/update.json";
+
         public TwitterService(IOptions<TwitterConfiguration> options,
                               HttpClient client)
         {
-            this.config = options.Value;
-            this.client = client;
+            this.client = new TwitterContext(new SingleUserAuthorizer
+            {
+                CredentialStore = new SingleUserInMemoryCredentialStore
+                {
+                    ConsumerKey = options.Value.ConsumerKey,
+                    ConsumerSecret = options.Value.ConsumerSecret,
+                    AccessToken = options.Value.AccessToken,
+                    AccessTokenSecret = options.Value.AccessTokenSecret
+                }
+            });
         }
 
         public async Task<string> VerifyCredentials()
         {
-            string auth = GenerateAuthHeader(VERIFY_CREDENTIALS_URL);
+            Account account = await this.client.Account
+                .Where(x => x.Type == AccountType.VerifyCredentials)
+                .FirstAsync();
 
-            HttpRequestMessage request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(VERIFY_CREDENTIALS_URL)
-            };
-
-            request.Headers.Add("Authorization", auth);
-
-            HttpResponseMessage response = await this.client.SendAsync(request);
-            string content = await response.Content.ReadAsStringAsync();
-
-            JObject parsed = JObject.Parse(content);
-
-            return parsed["screen_name"].ToString();
-        }
-
-        private string GenerateAuthHeader(string url)
-        {
-            OAuthRequest oauth = OAuthRequest.ForProtectedResource(
-                method: "GET",
-                consumerKey: this.config.ConsumerKey,
-                consumerSecret: this.config.ConsumerSecret,
-                accessToken: this.config.AccessToken,
-                accessTokenSecret: this.config.AccessTokenSecret
-            );
-
-            oauth.RequestUrl = url;
-
-            return oauth.GetAuthorizationHeader();
+            return account.User.ScreenNameResponse;
         }
 
         public Task SendMessageAsync(string text)
         {
-            throw new NotImplementedException();
+            return this.client.TweetAsync(text);
         }
     }
 }

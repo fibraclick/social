@@ -14,18 +14,21 @@ namespace FibraClickSocial.Services
         private readonly ILogger<SchedulerHostedService> logger;
         private readonly ITelegramService telegram;
         private readonly IFacebookService facebook;
+        private readonly ITwitterService twitter;
 
         private readonly CultureInfo culture = new CultureInfo("it-IT");
 
         public SchedulerHostedService(IWholesaleService wholesale,
                                       ILogger<SchedulerHostedService> logger,
                                       ITelegramService telegram,
-                                      IFacebookService facebook)
+                                      IFacebookService facebook,
+                                      ITwitterService twitter)
         {
             this.wholesale = wholesale;
             this.logger = logger;
             this.telegram = telegram;
             this.facebook = facebook;
+            this.twitter = twitter;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -78,6 +81,10 @@ namespace FibraClickSocial.Services
 
                 await PublishFacebook(date);
 
+                this.logger.LogInformation("Publishing on Twitter...");
+
+                await PublishTwitter(date);
+
                 this.logger.LogInformation("Done");
             }
         }
@@ -94,6 +101,13 @@ namespace FibraClickSocial.Services
             string message = string.Format(MessageTemplates.Facebook, date);
 
             return this.facebook.SendMessageAsync(message);
+        }
+
+        private Task PublishTwitter(string date)
+        {
+            string message = string.Format(MessageTemplates.Twitter, date);
+
+            return this.twitter.SendMessageAsync(message);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
