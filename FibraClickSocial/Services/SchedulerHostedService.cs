@@ -18,6 +18,8 @@ namespace FibraClickSocial.Services
 
         private readonly CultureInfo culture = new CultureInfo("it-IT");
 
+        private const string FILE_PATH = "version.txt";
+
         public SchedulerHostedService(IWholesaleService wholesale,
                                       ILogger<SchedulerHostedService> logger,
                                       ITelegramService telegram,
@@ -45,9 +47,9 @@ namespace FibraClickSocial.Services
             DateTimeOffset previousVersion;
 
             // Read last version unix timestamp
-            if (File.Exists("version.txt"))
+            if (File.Exists(FILE_PATH))
             {
-                string cache = await File.ReadAllTextAsync("version.txt");
+                string cache = await File.ReadAllTextAsync(FILE_PATH);
                 previousVersion = DateTimeOffset.FromUnixTimeSeconds(long.Parse(cache));
 
                 this.logger.LogInformation("Wholesale previous version is {Version}", previousVersion.ToString(culture));
@@ -61,7 +63,7 @@ namespace FibraClickSocial.Services
                     currentVersion.ToString(culture),
                     unixTs);
 
-                await File.WriteAllTextAsync("version.txt", unixTs);
+                await File.WriteAllTextAsync(FILE_PATH, unixTs);
 
                 // Avoids publishing the first time
                 previousVersion = currentVersion;
@@ -69,6 +71,8 @@ namespace FibraClickSocial.Services
 
             if (currentVersion != previousVersion)
             {
+                await File.WriteAllTextAsync(FILE_PATH, currentVersion.ToUnixTimeSeconds().ToString());
+
                 this.logger.LogInformation("Versions are different");
 
                 string date = currentVersion.ToString("dd MMMM yyyy");
