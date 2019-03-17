@@ -10,13 +10,18 @@
         /// <summary>
         /// Username of the Telegram channel where messages will be sent
         /// </summary>
-        public string Channel { get; set; }
+        public string ChannelUsername { get; set; }
 
         public void Validate()
         {
             if (string.IsNullOrEmpty(this.BotToken))
             {
                 throw new SettingsValidationException(nameof(TelegramConfiguration), nameof(this.BotToken), "must be a non-empty string");
+            }
+
+            if (string.IsNullOrEmpty(this.ChannelUsername))
+            {
+                throw new SettingsValidationException(nameof(TelegramConfiguration), nameof(this.ChannelUsername), "must be a non-empty string");
             }
         }
     }

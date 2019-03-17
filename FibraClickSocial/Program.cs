@@ -77,6 +77,7 @@ namespace FibraClickSocial
             services.AddHttpClient<ITwitterService, TwitterService>();
             services.AddHttpClient<ITelegramService, TelegramService>();
             services.AddHttpClient<IFacebookService, FacebookService>();
+            services.AddHttpClient<IWholesaleService, WholesaleService>();
 
             services.AddHostedService<ConfigurationValidationHostedService>();
             services.AddHostedService<CredentialsVerificationHostedService>();
