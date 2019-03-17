@@ -27,7 +27,7 @@ namespace FibraClickSocial.Services
             return me.Username;
         }
 
-        public Task SendMessage(string text)
+        public Task SendMessageAsync(string text)
         {
             return this.client.SendTextMessageAsync(CHANNEL_NAME, text, ParseMode.Markdown, disableWebPagePreview: true);
         }

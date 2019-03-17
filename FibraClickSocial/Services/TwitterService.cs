@@ -1,5 +1,4 @@
 ﻿using FibraClickSocial.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using OAuth;
@@ -56,6 +55,11 @@ namespace FibraClickSocial.Services
             oauth.RequestUrl = url;
 
             return oauth.GetAuthorizationHeader();
+        }
+
+        public Task SendMessageAsync(string text)
+        {
+            throw new NotImplementedException();
         }
     }
 }

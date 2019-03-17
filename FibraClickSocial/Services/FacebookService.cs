@@ -1,6 +1,7 @@
 ﻿using FibraClickSocial.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace FibraClickSocial.Services
         private const string ME_URL =
             "https://graph.facebook.com/v3.2/me?fields=id,name&access_token={0}";
 
+        private const string PUBLISH_URL =
+            "https://graph.facebook.com/v3.2/me/feed";
+
         public FacebookService(IOptions<FacebookConfiguration> options,
                                HttpClient client)
         {
@@ -32,6 +36,8 @@ namespace FibraClickSocial.Services
             string url = string.Format(VERIFY_SCOPES_URL, this.config.AccessToken, this.config.AppId, this.config.AppSecret);
 
             HttpResponseMessage response = await this.client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
             string content = await response.Content.ReadAsStringAsync();
 
             JObject parsed = JObject.Parse(content);
@@ -61,11 +67,26 @@ namespace FibraClickSocial.Services
             }
 
             response = await this.client.GetAsync(string.Format(ME_URL, this.config.AccessToken));
+            response.EnsureSuccessStatusCode();
+
             content = await response.Content.ReadAsStringAsync();
 
             JObject me = JObject.Parse(content);
 
             return me["name"].ToString();
+        }
+
+        public async Task SendMessageAsync(string text)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                { "message", text },
+                { "access_token", this.config.AccessToken }
+            };
+
+            var response = await this.client.PostAsync(PUBLISH_URL, new FormUrlEncodedContent(data));
+
+            response.EnsureSuccessStatusCode();
         }
     }
 }

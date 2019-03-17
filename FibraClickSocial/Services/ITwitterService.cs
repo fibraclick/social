@@ -1,7 +1,6 @@
 ﻿namespace FibraClickSocial.Services
 {
-    interface ITwitterService : IVerifyCredentials
-    {
-        
+    interface ITwitterService : IVerifyCredentials, ISendMessage
+    {   
     }
 }

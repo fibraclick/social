@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
-
-namespace FibraClickSocial.Services
+﻿namespace FibraClickSocial.Services
 {
-    interface ITelegramService : IVerifyCredentials
+    interface ITelegramService : IVerifyCredentials, ISendMessage
     {
-        Task SendMessage(string text);
     }
 }
