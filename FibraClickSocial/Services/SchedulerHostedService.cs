@@ -86,7 +86,7 @@ namespace FibraClickSocial.Services
 
                 this.logger.LogInformation("Versions are different");
 
-                string date = currentVersion.ToString("dd MMMM yyyy");
+                string date = currentVersion.ToString("dd MMMM yyyy", culture);
 
                 this.logger.LogInformation("Publishing to Telegram...");
 
