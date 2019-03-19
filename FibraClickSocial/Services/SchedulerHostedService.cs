@@ -92,13 +92,13 @@ namespace FibraClickSocial.Services
 
                 await PublishTelegram(date);
 
-                this.logger.LogInformation("Publishing to Facebook...");
-
-                await PublishFacebook(date);
-
                 this.logger.LogInformation("Publishing to Twitter...");
 
                 await PublishTwitter(date);
+
+                this.logger.LogInformation("Publishing to Facebook...");
+
+                await PublishFacebook(date);
 
                 this.logger.LogInformation("Done");
             }
