@@ -17,6 +17,8 @@ namespace FibraClickSocial.Services
         private const string PUBLISH_URL =
             "https://api.twitter.com/1.1/statuses/update.json";
 
+        public bool Enabled { get; }
+
         public TwitterService(IOptions<TwitterConfiguration> options,
                               HttpClient client)
         {
@@ -30,6 +32,8 @@ namespace FibraClickSocial.Services
                     AccessTokenSecret = options.Value.AccessTokenSecret
                 }
             });
+
+            this.Enabled = options.Value.Enabled;
         }
 
         public async Task<string> VerifyCredentials()

@@ -3,6 +3,11 @@
     class TelegramConfiguration : IValidatable
     {
         /// <summary>
+        /// Whether Telegram publishing is enabled
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// Telegram bot token. Get one with @BotFather on Telegram
         /// </summary>
         public string BotToken { get; set; }

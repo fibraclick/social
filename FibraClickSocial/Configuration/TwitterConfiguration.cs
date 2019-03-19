@@ -3,6 +3,11 @@
     class TwitterConfiguration : IValidatable
     {
         /// <summary>
+        /// Whether Twitter publishing is enabled
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// Twitter application key
         /// </summary>
         public string ConsumerKey { get; set; }

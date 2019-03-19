@@ -26,15 +26,24 @@ namespace FibraClickSocial.Services
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             string name;
-            
-            name = await this.telegram.VerifyCredentials();
-            this.logger.LogInformation("Verified Telegram credentials for @{Handle}", name);
 
-            name = await this.twitter.VerifyCredentials();
-            this.logger.LogInformation("Verified Twitter credentials for @{Handle}", name);
+            if (this.telegram.Enabled)
+            {
+                name = await this.telegram.VerifyCredentials();
+                this.logger.LogInformation("Verified Telegram credentials for @{Handle}", name);
+            }
 
-            name = await this.facebook.VerifyCredentials();
-            this.logger.LogInformation("Verified Facebook credentials for {Handle}", name);
+            if (this.twitter.Enabled)
+            {
+                name = await this.twitter.VerifyCredentials();
+                this.logger.LogInformation("Verified Twitter credentials for @{Handle}", name);
+            }
+
+            if (this.facebook.Enabled)
+            {
+                name = await this.facebook.VerifyCredentials();
+                this.logger.LogInformation("Verified Facebook credentials for {Handle}", name);
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

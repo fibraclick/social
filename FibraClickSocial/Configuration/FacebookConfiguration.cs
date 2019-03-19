@@ -3,6 +3,11 @@
     class FacebookConfiguration : IValidatable
     {
         /// <summary>
+        /// Whether Facebook publishing is enabled
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// Facebook application ID
         /// </summary>
         public string AppId { get; set; }

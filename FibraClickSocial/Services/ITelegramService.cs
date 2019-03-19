@@ -1,6 +1,6 @@
 ﻿namespace FibraClickSocial.Services
 {
-    interface ITelegramService : IVerifyCredentials, ISendMessage
+    interface ITelegramService : IVerifyCredentials, ISendMessage, IEnabled
     {
     }
 }

@@ -13,11 +13,14 @@ namespace FibraClickSocial.Services
         private readonly TelegramBotClient client;
         private readonly string CHANNEL_NAME;
 
+        public bool Enabled { get; }
+
         public TelegramService(IOptions<TelegramConfiguration> options,
                                HttpClient http)
         {
             CHANNEL_NAME = "@" + options.Value.ChannelUsername;
             this.client = new TelegramBotClient(options.Value.BotToken, http);
+            this.Enabled = options.Value.Enabled;
         }
 
         public async Task<string> VerifyCredentials()

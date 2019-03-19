@@ -88,17 +88,23 @@ namespace FibraClickSocial.Services
 
                 string date = currentVersion.ToString("dd MMMM yyyy", culture);
 
-                this.logger.LogInformation("Publishing to Telegram...");
+                if (this.telegram.Enabled)
+                {
+                    this.logger.LogInformation("Publishing to Telegram...");
+                    await PublishTelegram(date);
+                }
 
-                await PublishTelegram(date);
+                if (this.twitter.Enabled)
+                {
+                    this.logger.LogInformation("Publishing to Twitter...");
+                    await PublishTwitter(date);
+                }
 
-                this.logger.LogInformation("Publishing to Twitter...");
-
-                await PublishTwitter(date);
-
-                this.logger.LogInformation("Publishing to Facebook...");
-
-                await PublishFacebook(date);
+                if (this.facebook.Enabled)
+                {
+                    this.logger.LogInformation("Publishing to Facebook...");
+                    await PublishFacebook(date);
+                }
 
                 this.logger.LogInformation("Done");
             }

@@ -25,11 +25,14 @@ namespace FibraClickSocial.Services
         private const string PUBLISH_URL =
             "https://graph.facebook.com/v3.2/me/feed";
 
+        public bool Enabled { get; }
+
         public FacebookService(IOptions<FacebookConfiguration> options,
                                HttpClient client)
         {
             this.config = options.Value;
             this.client = client;
+            this.Enabled = this.config.Enabled;
         }
 
         public async Task<string> VerifyCredentials()
