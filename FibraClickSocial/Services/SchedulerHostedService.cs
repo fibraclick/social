@@ -86,7 +86,7 @@ namespace FibraClickSocial.Services
 
                 this.logger.LogInformation("Versions are different");
 
-                string date = currentVersion.ToString("dd MMMM yyyy", culture);
+                string date = currentVersion.ToString("d MMMM yyyy", culture);
 
                 if (this.telegram.Enabled)
                 {
