@@ -53,6 +53,12 @@ namespace FibraClickSocial.Services
         {
             DateTimeOffset currentVersion = await this.wholesale.GetCurrentVersion();
 
+            if (currentVersion == default)
+            {
+                this.logger.LogWarning("Couldn't get wholesale current version");
+                return;
+            }
+
             this.logger.LogInformation("Wholesale current version is {Version}", currentVersion.ToString(culture));
 
             DateTimeOffset previousVersion;

@@ -24,7 +24,7 @@ namespace FibraClickSocial.Services
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Head, this.config.Url);
             HttpResponseMessage resp = await this.client.SendAsync(req);
 
-            return resp.Content.Headers.LastModified.Value;
+            return resp.Content.Headers.LastModified.GetValueOrDefault();
         }
     }
 }
