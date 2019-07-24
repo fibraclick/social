@@ -73,11 +73,13 @@ namespace FibraClickSocial
             services.Configure<TwitterConfiguration>(hostContext.Configuration.GetSection("Twitter"));
             services.Configure<FacebookConfiguration>(hostContext.Configuration.GetSection("Facebook"));
 
-            // This also registers the service as a transient service
+            // These also register the service as a transient service
             services.AddHttpClient<ITwitterService, TwitterService>();
             services.AddHttpClient<ITelegramService, TelegramService>();
             services.AddHttpClient<IFacebookService, FacebookService>();
             services.AddHttpClient<IWholesaleService, WholesaleService>();
+
+            services.AddTransient<ISocialService, SocialService>();
 
             services.AddHostedService<ConfigurationValidationHostedService>();
             services.AddHostedService<CredentialsVerificationHostedService>();

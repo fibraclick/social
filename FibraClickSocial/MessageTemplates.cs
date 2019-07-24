@@ -2,7 +2,9 @@
 {
     static class MessageTemplates
     {
-        public const string Telegram =
+        public static class Wholesale
+        {
+            public const string Telegram =
 @"⚡️ TIM ha aggiornato i dati sulla copertura degli armadi FTTC
 
 🗓 {0}
@@ -10,7 +12,7 @@
 
 ❓ Hai una domanda? Chiedi su forum.fibra.click";
 
-        public const string Facebook =
+            public const string Facebook =
 @"⚡️ #TIM ha aggiornato i dati sulla copertura degli armadi #FTTC #fibra
 
 🗓 {0}
@@ -18,12 +20,13 @@
 
 ❓ Hai una domanda? Chiedi su https://forum.fibra.click";
 
-        public const string Twitter =
+            public const string Twitter =
 @"⚡️ #TIM ha aggiornato i dati sulla copertura degli armadi #FTTC #fibra
 
 🗓 {0}
 👉 Dati aggiornati: http://fibra.click/tim 
 
 ❓ Hai una domanda? Chiedi su http://forum.fibra.click";
+        }
     }
 }
