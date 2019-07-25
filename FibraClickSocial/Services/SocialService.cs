@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace FibraClickSocial.Services
@@ -26,19 +27,33 @@ namespace FibraClickSocial.Services
             if (this.telegram.Enabled)
             {
                 this.logger.LogInformation("Publishing to Telegram...");
-                await this.telegram.SendMessageAsync(telegram);
+
+                await this.SendSingle(this.telegram, telegram);
             }
 
             if (this.twitter.Enabled)
             {
                 this.logger.LogInformation("Publishing to Twitter...");
-                await this.twitter.SendMessageAsync(twitter);
+
+                await this.SendSingle(this.twitter, twitter);
             }
 
             if (this.facebook.Enabled)
             {
                 this.logger.LogInformation("Publishing to Facebook...");
-                await this.facebook.SendMessageAsync(facebook);
+                await this.SendSingle(this.facebook, facebook);
+            }
+        }
+
+        private async Task SendSingle(ISendMessage social, string message)
+        {
+            try
+            {
+                await social.SendMessageAsync(message);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Error while publishing. Going on...");
             }
         }
     }

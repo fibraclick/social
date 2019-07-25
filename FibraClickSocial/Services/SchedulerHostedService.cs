@@ -10,6 +10,7 @@ namespace FibraClickSocial.Services
     class SchedulerHostedService : IHostedService
     {
         private readonly IWholesaleService wholesale;
+        private readonly IFlashFiberService flashfiber;
         private readonly ILogger<SchedulerHostedService> logger;
         private readonly ISocialService social;
 
@@ -17,10 +18,12 @@ namespace FibraClickSocial.Services
         private readonly TimeSpan CHECK_INTERVAL = TimeSpan.FromMinutes(5);
 
         public SchedulerHostedService(IWholesaleService wholesale,
+                                      IFlashFiberService flashfiber,
                                       ILogger<SchedulerHostedService> logger,
                                       ISocialService social)
         {
             this.wholesale = wholesale;
+            this.flashfiber = flashfiber;
             this.logger = logger;
             this.social = social;
         }
@@ -42,25 +45,31 @@ namespace FibraClickSocial.Services
 
         private async Task RunCheck()
         {
+            await CheckWholesale();
+            await CheckFlashFiber();
+        }
+
+        private async Task CheckWholesale()
+        {
             DateTimeOffset currentVersion = await this.wholesale.GetCurrentVersion();
 
             if (currentVersion == default)
             {
-                this.logger.LogWarning("Couldn't get wholesale current version");
+                this.logger.LogWarning("[Wholesale] Couldn't get current version");
                 return;
             }
 
-            this.logger.LogInformation("Wholesale current version is {Version}", currentVersion.ToString(culture));
+            this.logger.LogInformation("[Wholesale] Current version is {Version}", currentVersion.ToString(culture));
 
             DateTimeOffset previousVersion = await this.wholesale.GetPreviousVersion(currentVersion);
 
-            this.logger.LogInformation("Wholesale previous version is {Version}", previousVersion.ToString(culture));
+            this.logger.LogInformation("[Wholesale] Previous version is {Version}", previousVersion.ToString(culture));
 
             if (currentVersion != previousVersion)
             {
                 await this.wholesale.UpdateCurrentVersion(currentVersion);
 
-                this.logger.LogInformation("Versions are different");
+                this.logger.LogInformation("[Wholesale] Versions are different");
 
                 string date = currentVersion.ToString("d MMMM yyyy", culture);
 
@@ -70,7 +79,39 @@ namespace FibraClickSocial.Services
                     facebook: string.Format(MessageTemplates.Wholesale.Facebook, date)
                 );
 
-                this.logger.LogInformation("Done");
+                this.logger.LogInformation("[Wholesale] Done");
+            }
+        }
+
+        private async Task CheckFlashFiber()
+        {
+            string currentVersion = await this.flashfiber.GetCurrentVersion();
+
+            if (currentVersion == null)
+            {
+                this.logger.LogWarning("[FlashFiber] Couldn't get current version");
+                return;
+            }
+
+            this.logger.LogInformation("[FlashFiber] Current version is {Version}", currentVersion);
+
+            string previousVersion = await this.flashfiber.GetPreviousVersion(currentVersion);
+
+            this.logger.LogInformation("[FlashFiber] Previous version is {Version}", previousVersion);
+
+            if (currentVersion != previousVersion)
+            {
+                await this.flashfiber.UpdateCurrentVersion(currentVersion);
+
+                this.logger.LogInformation("[FlashFiber] Versions are different");
+
+                await this.social.Publish(
+                    telegram: string.Format(MessageTemplates.FlashFiber.Telegram, currentVersion),
+                    twitter: string.Format(MessageTemplates.FlashFiber.Twitter, currentVersion),
+                    facebook: string.Format(MessageTemplates.FlashFiber.Facebook, currentVersion)
+                );
+
+                this.logger.LogInformation("[FlashFiber] Done");
             }
         }
 

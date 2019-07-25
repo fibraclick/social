@@ -69,6 +69,8 @@ namespace FibraClickSocial
             services.Configure<ConsoleLifetimeOptions>(console => console.SuppressStatusMessages = true);
 
             services.Configure<WholesaleConfiguration>(hostContext.Configuration.GetSection("Wholesale"));
+            services.Configure<FlashFiberConfiguration>(hostContext.Configuration.GetSection("FlashFiber"));
+
             services.Configure<TelegramConfiguration>(hostContext.Configuration.GetSection("Telegram"));
             services.Configure<TwitterConfiguration>(hostContext.Configuration.GetSection("Twitter"));
             services.Configure<FacebookConfiguration>(hostContext.Configuration.GetSection("Facebook"));
@@ -78,6 +80,7 @@ namespace FibraClickSocial
             services.AddHttpClient<ITelegramService, TelegramService>();
             services.AddHttpClient<IFacebookService, FacebookService>();
             services.AddHttpClient<IWholesaleService, WholesaleService>();
+            services.AddHttpClient<IFlashFiberService, FlashFiberService>();
 
             services.AddTransient<ISocialService, SocialService>();
 
