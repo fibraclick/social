@@ -44,12 +44,14 @@ namespace FibraClickSocial.Services
                 string cache = await File.ReadAllTextAsync(FILE_PATH);
                 cache = cache.Trim();
 
-                return (cache != "" ? cache : fallback);
+                if (cache != "")
+                {
+                    return cache;
+                }
             }
-            else
-            {
-                return fallback;
-            }
+
+            await UpdateCurrentVersion(fallback);
+            return fallback;
         }
 
         public Task UpdateCurrentVersion(string version)

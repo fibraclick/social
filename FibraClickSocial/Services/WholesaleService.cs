@@ -40,15 +40,10 @@ namespace FibraClickSocial.Services
                 {
                     return DateTimeOffset.FromUnixTimeSeconds(long.Parse(cache));
                 }
-                else
-                {
-                    return fallback;
-                }
             }
-            else
-            {
-                return fallback;
-            }
+
+            await UpdateCurrentVersion(fallback);
+            return fallback;
         }
 
         public Task UpdateCurrentVersion(DateTimeOffset version)
