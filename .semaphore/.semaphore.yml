@@ -1,0 +1,18 @@
+
+version: v1.0
+
+name: Empty
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1803
+
+execution_time_limit:
+  minutes: 6
+
+blocks:
+
+promotions:
+  - name: Deploy
+    pipeline_file: deploy.yml
