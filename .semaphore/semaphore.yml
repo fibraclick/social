@@ -1,7 +1,7 @@
 
 version: v1.0
 
-name: Empty
+name: Main
 
 agent:
   machine:
@@ -12,6 +12,12 @@ execution_time_limit:
   minutes: 6
 
 blocks:
+  - name: Empty
+    task:
+      jobs:
+        - name: 'Echo-ing something'
+          commands:
+            - echo "I am useless"
 
 promotions:
   - name: Deploy
