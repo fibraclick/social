@@ -1,14 +1,14 @@
-﻿using CustomConsoleLogger;
+﻿using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using FibraClickSocial.Configuration;
 using FibraClickSocial.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+using PlainConsoleLogger;
 
 namespace FibraClickSocial
 {
@@ -60,7 +60,7 @@ namespace FibraClickSocial
         private static void ConfigureLogging(HostBuilderContext hostContext, ILoggingBuilder logging)
         {
             logging.AddConfiguration(hostContext.Configuration.GetSection("Logging"));
-            logging.AddCustomConsole();
+            logging.AddPlainConsole();
         }
 
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
