@@ -1,4 +1,5 @@
 ﻿using System;
+using FibraClickSocial.Interfaces;
 
 namespace FibraClickSocial.Configuration
 {

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FibraClickSocial.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;

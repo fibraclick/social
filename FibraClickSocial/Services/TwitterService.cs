@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FibraClickSocial.Interfaces;
 
 namespace FibraClickSocial.Services
 {

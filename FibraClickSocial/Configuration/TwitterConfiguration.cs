@@ -1,4 +1,6 @@
-﻿namespace FibraClickSocial.Configuration
+﻿using FibraClickSocial.Interfaces;
+
+namespace FibraClickSocial.Configuration
 {
     class TwitterConfiguration : IValidatable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace FibraClickSocial.Services
+namespace FibraClickSocial.Interfaces
 {
     interface IWholesaleService
     {

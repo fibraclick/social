@@ -1,4 +1,4 @@
-﻿namespace FibraClickSocial.Configuration
+﻿namespace FibraClickSocial.Interfaces
 {
     interface IValidatable
     {

@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using FibraClickSocial.Configuration;
+using FibraClickSocial.Interfaces;
 using FibraClickSocial.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
