@@ -4,7 +4,6 @@ WORKDIR /app
 # Copy sln and csproj and try to restore dependencies
 COPY *.sln .
 COPY FibraClickSocial/*.csproj ./FibraClickSocial/
-COPY CustomConsoleLogger/*.csproj ./CustomConsoleLogger/
 RUN dotnet restore
 
 # Copy all srcs and compile
