@@ -16,12 +16,15 @@ auto_cancel:
     when: 'true'
 
 blocks:
-  - name: Empty
+  - name: Dockerize (dry-run)
     task:
+      prologue:
+        commands:
+          - checkout
       jobs:
-        - name: 'Echo-ing something'
+        - name: Build
           commands:
-            - echo "I am useless"
+            - docker build .
 
 promotions:
   - name: Deploy
