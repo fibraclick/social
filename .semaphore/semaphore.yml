@@ -11,6 +11,10 @@ agent:
 execution_time_limit:
   minutes: 6
 
+auto_cancel:
+  running:
+    when: 'true'
+
 blocks:
   - name: Empty
     task:
