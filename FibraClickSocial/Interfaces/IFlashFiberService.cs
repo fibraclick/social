@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace FibraClickSocial.Interfaces
 {
     interface IFlashFiberService
     {
-        Task<string> GetCurrentVersion();
+        Task<DateTimeOffset> GetCurrentVersion();
 
-        Task<string> GetPreviousVersion(string fallback);
+        Task<DateTimeOffset> GetPreviousVersion(DateTimeOffset fallback);
 
-        Task UpdateCurrentVersion(string version);
+        Task UpdateCurrentVersion(DateTimeOffset version);
     }
 }

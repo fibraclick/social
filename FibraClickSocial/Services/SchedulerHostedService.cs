@@ -86,9 +86,9 @@ namespace FibraClickSocial.Services
 
         private async Task CheckFlashFiber()
         {
-            string currentVersion = await this.flashfiber.GetCurrentVersion();
+            DateTimeOffset currentVersion = await this.flashfiber.GetCurrentVersion();
 
-            if (currentVersion == null)
+            if (currentVersion == default)
             {
                 this.logger.LogWarning("[FlashFiber] Couldn't get current version");
                 return;
@@ -96,7 +96,7 @@ namespace FibraClickSocial.Services
 
             this.logger.LogInformation("[FlashFiber] Current version is {Version}", currentVersion);
 
-            string previousVersion = await this.flashfiber.GetPreviousVersion(currentVersion);
+            DateTimeOffset previousVersion = await this.flashfiber.GetPreviousVersion(currentVersion);
 
             this.logger.LogInformation("[FlashFiber] Previous version is {Version}", previousVersion);
 
@@ -106,10 +106,12 @@ namespace FibraClickSocial.Services
 
                 this.logger.LogInformation("[FlashFiber] Versions are different");
 
+                string date = currentVersion.ToString("d MMMM yyyy", culture);
+
                 await this.social.Publish(
-                    telegram: string.Format(MessageTemplates.FlashFiber.Telegram, currentVersion),
-                    twitter: string.Format(MessageTemplates.FlashFiber.Twitter, currentVersion),
-                    facebook: string.Format(MessageTemplates.FlashFiber.Facebook, currentVersion)
+                    telegram: string.Format(MessageTemplates.FlashFiber.Telegram, date),
+                    twitter: string.Format(MessageTemplates.FlashFiber.Twitter, date),
+                    facebook: string.Format(MessageTemplates.FlashFiber.Facebook, date)
                 );
 
                 this.logger.LogInformation("[FlashFiber] Done");
