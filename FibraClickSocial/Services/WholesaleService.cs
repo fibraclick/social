@@ -1,10 +1,11 @@
-﻿using FibraClickSocial.Configuration;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FibraClickSocial.Configuration;
 using FibraClickSocial.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace FibraClickSocial.Services
 {
@@ -27,7 +28,14 @@ namespace FibraClickSocial.Services
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Head, this.config.Url);
             HttpResponseMessage resp = await this.client.SendAsync(req);
 
-            return resp.Content.Headers.LastModified.GetValueOrDefault();
+            if (resp.StatusCode == HttpStatusCode.OK)
+            {
+                return resp.Content.Headers.LastModified.GetValueOrDefault();
+            }
+            else
+            {
+                return default;
+            }
         }
 
         public async Task<DateTimeOffset> GetPreviousVersion(DateTimeOffset fallback)
