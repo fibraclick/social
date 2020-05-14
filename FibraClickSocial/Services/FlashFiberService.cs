@@ -1,11 +1,12 @@
 ﻿using FibraClickSocial.Configuration;
+using FibraClickSocial.Interfaces;
 using Microsoft.Extensions.Options;
+using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FibraClickSocial.Interfaces;
-using System;
 
 namespace FibraClickSocial.Services
 {
@@ -25,9 +26,17 @@ namespace FibraClickSocial.Services
 
         public async Task<DateTimeOffset> GetCurrentVersion()
         {
-            string resp = await this.client.GetStringAsync(this.config.Url);
+            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Head, this.config.Url);
+            HttpResponseMessage resp = await this.client.SendAsync(req);
 
-            Match match = Regex.Match(resp, "Ultimo aggiornamento copertura: ([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})");
+            if (!resp.IsSuccessStatusCode)
+            {
+                return default;
+            }
+            
+            string content = await resp.Content.ReadAsStringAsync();
+
+            Match match = Regex.Match(content, "Ultimo aggiornamento copertura: ([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})");
 
             if (match.Success)
             {
