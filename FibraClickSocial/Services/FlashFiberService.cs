@@ -26,8 +26,7 @@ namespace FibraClickSocial.Services
 
         public async Task<DateTimeOffset> GetCurrentVersion()
         {
-            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Head, this.config.Url);
-            HttpResponseMessage resp = await this.client.SendAsync(req);
+            HttpResponseMessage resp = await this.client.GetAsync(this.config.Url);
 
             if (!resp.IsSuccessStatusCode)
             {
