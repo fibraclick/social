@@ -16,7 +16,7 @@ namespace FibraClickSocial.Services
         private readonly FacebookConfiguration config;
         private readonly HttpClient client;
 
-        private readonly string[] REQUIRED_SCOPES = new[] { "manage_pages", "publish_pages" };
+        private readonly string[] REQUIRED_SCOPES = new[] { "pages_manage_posts", "pages_read_engagement" };
 
         private const string VERIFY_SCOPES_URL =
             "https://graph.facebook.com/debug_token?input_token={0}&access_token={1}|{2}";
