@@ -47,7 +47,7 @@ namespace FibraClickSocial.Services
         private async Task RunCheck()
         {
             await CheckWholesale();
-            await CheckFlashFiber();
+            //await CheckFlashFiber();
         }
 
         private async Task CheckWholesale()
