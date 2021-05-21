@@ -29,11 +29,11 @@ blocks:
             - docker images
             - docker push "$REPOSITORY/$SOCIAL:$SEMAPHORE_GIT_SHA"
 
-  - name: fra1tb3
+  - name: tb4@hetzner
     task:
       secrets:
         - name: fibraclick
-        - name: fra1tb3
+        - name: tb4@hetzner
       prologue:
         commands:
           - chmod 0600 ~/.keys/*
