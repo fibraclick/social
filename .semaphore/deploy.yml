@@ -14,17 +14,18 @@ blocks:
   - name: Dockerize
     task:
       secrets:
-        - name: gcloud
+        - name: aws_ecr
         - name: fibraclick
       prologue:
         commands:
-          - gcloud auth activate-service-account --key-file=.secrets/gcloud.json
-          - gcloud auth configure-docker -q
+          - aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 
           - checkout
       jobs:
         - name: Dockerize
           commands:
+            - export REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+
             - docker build -t "$REPOSITORY/$SOCIAL:$SEMAPHORE_GIT_SHA" -f Dockerfile .
             - docker images
             - docker push "$REPOSITORY/$SOCIAL:$SEMAPHORE_GIT_SHA"
