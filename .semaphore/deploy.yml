@@ -35,6 +35,7 @@ blocks:
       secrets:
         - name: fibraclick
         - name: tb4@hetzner
+        - name: aws_ecr
       prologue:
         commands:
           - chmod 0600 ~/.keys/*
@@ -44,4 +45,7 @@ blocks:
       jobs:
         - name: SSH
           commands:
-            - ssh deploy@$IP DOCKER_TAG=$SEMAPHORE_GIT_SHA CONTAINER_NAME=$SOCIAL 'bash -s' < .semaphore/deploy.sh
+            - export DOCKER_REGISTRY_NAME="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+            - export DOCKER_REGISTRY_TOKEN="$(aws ecr get-login-password --region $AWS_REGION)"
+
+            - ssh deploy@$IP DOCKER_REGISTRY_TOKEN=$DOCKER_REGISTRY_TOKEN DOCKER_REGISTRY_NAME=$DOCKER_REGISTRY_NAME DOCKER_TAG=$SEMAPHORE_GIT_SHA CONTAINER_NAME=$BACKEND_BETA 'bash -s' < .semaphore/deploy-backend.sh DOCKER_TAG=$SEMAPHORE_GIT_SHA CONTAINER_NAME=$SOCIAL 'bash -s' < .semaphore/deploy.sh
