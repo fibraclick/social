@@ -67,7 +67,7 @@ namespace FibraClickSocial
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
             services.Configure<WholesaleConfiguration>(hostContext.Configuration.GetSection("Wholesale"));
-            services.Configure<FlashFiberConfiguration>(hostContext.Configuration.GetSection("FlashFiber"));
+            services.Configure<FiberCopConfiguration>(hostContext.Configuration.GetSection("FiberCop"));
 
             services.Configure<TelegramConfiguration>(hostContext.Configuration.GetSection("Telegram"));
             services.Configure<TwitterConfiguration>(hostContext.Configuration.GetSection("Twitter"));
@@ -78,7 +78,7 @@ namespace FibraClickSocial
             services.AddHttpClient<ITelegramService, TelegramService>();
             services.AddHttpClient<IFacebookService, FacebookService>();
             services.AddHttpClient<IWholesaleService, WholesaleService>();
-            services.AddHttpClient<IFlashFiberService, FlashFiberService>();
+            services.AddHttpClient<IFiberCopService, FiberCopService>();
 
             services.AddTransient<ISocialService, SocialService>();
 

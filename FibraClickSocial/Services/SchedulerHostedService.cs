@@ -11,7 +11,7 @@ namespace FibraClickSocial.Services
     class SchedulerHostedService : IHostedService
     {
         private readonly IWholesaleService wholesale;
-        private readonly IFlashFiberService flashfiber;
+        private readonly IFiberCopService fibercop;
         private readonly ILogger<SchedulerHostedService> logger;
         private readonly ISocialService social;
 
@@ -19,12 +19,12 @@ namespace FibraClickSocial.Services
         private readonly TimeSpan CHECK_INTERVAL = TimeSpan.FromMinutes(5);
 
         public SchedulerHostedService(IWholesaleService wholesale,
-                                      IFlashFiberService flashfiber,
-                                      ILogger<SchedulerHostedService> logger,
-                                      ISocialService social)
+            IFiberCopService fibercop,
+            ILogger<SchedulerHostedService> logger,
+            ISocialService social)
         {
             this.wholesale = wholesale;
-            this.flashfiber = flashfiber;
+            this.fibercop = fibercop;
             this.logger = logger;
             this.social = social;
         }
@@ -47,7 +47,7 @@ namespace FibraClickSocial.Services
         private async Task RunCheck()
         {
             await CheckWholesale();
-            //await CheckFlashFiber();
+            await CheckFiberCop();
         }
 
         private async Task CheckWholesale()
@@ -84,37 +84,42 @@ namespace FibraClickSocial.Services
             }
         }
 
-        private async Task CheckFlashFiber()
+        private async Task CheckFiberCop()
         {
-            DateTimeOffset currentVersion = await this.flashfiber.GetCurrentVersion();
+            string currentCount = await this.fibercop.GetCurrentCount();
 
-            if (currentVersion == default)
+            if (currentCount == default)
             {
-                this.logger.LogWarning("[FlashFiber] Couldn't get current version");
+                this.logger.LogWarning("[FiberCop] Couldn't get current count");
                 return;
             }
 
-            this.logger.LogInformation("[FlashFiber] Current version is {Version}", currentVersion);
+            this.logger.LogInformation("[FiberCop] Current count is {Version}", currentCount);
 
-            DateTimeOffset previousVersion = await this.flashfiber.GetPreviousVersion(currentVersion);
+            string previousVersion = await this.fibercop.GetPreviousCount();
+            
+            this.logger.LogInformation("[FiberCop] Previous count is {Version}", previousVersion);
 
-            this.logger.LogInformation("[FlashFiber] Previous version is {Version}", previousVersion);
-
-            if (currentVersion != previousVersion)
+            if (previousVersion == default)
             {
-                await this.flashfiber.UpdateCurrentVersion(currentVersion);
+                this.logger.LogWarning("[FiberCop] No previous count, updating cache with {Version}", currentCount);
+                await this.fibercop.UpdateCurrentVersion(currentCount);
+            }
+            else if (currentCount != previousVersion)
+            {
+                await this.fibercop.UpdateCurrentVersion(currentCount);
 
-                this.logger.LogInformation("[FlashFiber] Versions are different");
+                this.logger.LogInformation("[FiberCop] Counts are different");
 
-                string date = currentVersion.ToString("d MMMM yyyy", culture);
+                string date = DateTime.Now.ToString("d MMMM yyyy", culture);
 
                 await this.social.Publish(
-                    telegram: string.Format(MessageTemplates.FlashFiber.Telegram, date),
-                    twitter: string.Format(MessageTemplates.FlashFiber.Twitter, date),
-                    facebook: string.Format(MessageTemplates.FlashFiber.Facebook, date)
+                    telegram: string.Format(MessageTemplates.FiberCop.Telegram, date),
+                    twitter: string.Format(MessageTemplates.FiberCop.Twitter, date),
+                    facebook: string.Format(MessageTemplates.FiberCop.Facebook, date)
                 );
 
-                this.logger.LogInformation("[FlashFiber] Done");
+                this.logger.LogInformation("[FiberCop] Done");
             }
         }
 

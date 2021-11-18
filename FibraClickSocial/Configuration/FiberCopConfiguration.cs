@@ -3,7 +3,7 @@ using FibraClickSocial.Interfaces;
 
 namespace FibraClickSocial.Configuration
 {
-    class FlashFiberConfiguration : IValidatable
+    class FiberCopConfiguration : IValidatable
     {
         /// <summary>
         /// URL of the resource that should be monitored
@@ -14,7 +14,7 @@ namespace FibraClickSocial.Configuration
         {
             if (this.Url == null)
             {
-                throw new SettingsValidationException(nameof(FlashFiberConfiguration), nameof(this.Url), "must be a valid Uri");
+                throw new SettingsValidationException(nameof(FiberCopConfiguration), nameof(this.Url), "must be a valid Uri");
             }
         }
     }

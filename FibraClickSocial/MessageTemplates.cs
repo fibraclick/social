@@ -55,5 +55,26 @@
 
 ✳️ Domande? Chiedi sul forum: https://forum.fibra.click";
         }
+
+        public static class FiberCop
+        {
+            public const string Telegram =
+                @"📣 *FiberCop ha aggiornato la mappa con i cantieri FTTH*
+
+🗓 {0}
+👉 fibercop.it/cantieri-in-corso";
+
+            public const string Facebook =
+                @"📣 #FiberCop ha aggiornato la mappa con i cantieri #FTTH #fibra
+
+🗓 {0}
+👉 https://www.fibercop.it.it/cantieri-in-corso";
+
+            public const string Twitter =
+                @"📣 #FiberCop ha aggiornato la mappa con i cantieri #FTTH #fibra
+
+🗓 {0}
+👉 https://www.fibercop.it/cantieri-in-corso";  
+        }
     }
 }
