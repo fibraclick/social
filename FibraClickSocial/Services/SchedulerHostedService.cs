@@ -103,11 +103,11 @@ namespace FibraClickSocial.Services
             if (previousVersion == default)
             {
                 this.logger.LogWarning("[FiberCop] No previous count, updating cache with {Version}", currentCount);
-                await this.fibercop.UpdateCurrentVersion(currentCount);
+                await this.fibercop.UpdateCurrentCount(currentCount);
             }
             else if (currentCount != previousVersion)
             {
-                await this.fibercop.UpdateCurrentVersion(currentCount);
+                await this.fibercop.UpdateCurrentCount(currentCount);
 
                 this.logger.LogInformation("[FiberCop] Counts are different");
 

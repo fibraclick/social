@@ -63,9 +63,9 @@ namespace FibraClickSocial.Services
             return default;
         }
 
-        public Task UpdateCurrentVersion(string version)
+        public Task UpdateCurrentCount(string count)
         {
-            return File.WriteAllTextAsync(FILE_PATH, version);
+            return File.WriteAllTextAsync(FILE_PATH, count);
         }
     }
 }

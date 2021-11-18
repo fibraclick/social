@@ -9,6 +9,6 @@ namespace FibraClickSocial.Interfaces
 
         Task<string> GetPreviousCount();
 
-        Task UpdateCurrentVersion(string version);
+        Task UpdateCurrentCount(string count);
     }
 }
