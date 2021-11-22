@@ -17,6 +17,8 @@ namespace FibraClickSocial.Services
         private readonly HttpClient client;
         private readonly FiberCopConfiguration config;
 
+        private DateTime lastChangedAt;
+
         public FiberCopService(HttpClient client,
             IOptions<FiberCopConfiguration> options)
         {
@@ -66,6 +68,16 @@ namespace FibraClickSocial.Services
         public Task UpdateCurrentCount(string count)
         {
             return File.WriteAllTextAsync(FILE_PATH, count);
+        }
+
+        public void SetNotified()
+        {
+            this.lastChangedAt = DateTime.Now;
+        }
+
+        public bool ShouldNotify()
+        {
+            return DateTime.Now - this.lastChangedAt > TimeSpan.FromHours(6);
         }
     }
 }

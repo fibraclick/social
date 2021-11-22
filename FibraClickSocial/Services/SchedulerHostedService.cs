@@ -97,7 +97,7 @@ namespace FibraClickSocial.Services
             this.logger.LogInformation("[FiberCop] Current count is {Version}", currentCount);
 
             string previousVersion = await this.fibercop.GetPreviousCount();
-            
+
             this.logger.LogInformation("[FiberCop] Previous count is {Version}", previousVersion);
 
             if (previousVersion == default)
@@ -108,6 +108,14 @@ namespace FibraClickSocial.Services
             else if (currentCount != previousVersion)
             {
                 await this.fibercop.UpdateCurrentCount(currentCount);
+
+                if (!this.fibercop.ShouldNotify())
+                {
+                    this.logger.LogWarning("[FiberCop] Duplicate avoided");
+                    return;
+                }
+
+                this.fibercop.SetNotified();
 
                 this.logger.LogInformation("[FiberCop] Counts are different");
 
