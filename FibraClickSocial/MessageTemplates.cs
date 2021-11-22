@@ -74,7 +74,8 @@
                 @"📣 #FiberCop ha aggiornato la mappa con i cantieri #FTTH #fibra
 
 🗓 {0}
-👉 https://www.fibercop.it/cantieri-in-corso";  
+
+https://www.fibercop.it/cantieri-in-corso";  
         }
     }
 }
