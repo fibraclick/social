@@ -52,11 +52,15 @@ namespace FibraClickSocial.Services
 
         private async Task CheckWholesale()
         {
-            DateTimeOffset currentVersion = await this.wholesale.GetCurrentVersion();
+            DateTimeOffset currentVersion;
 
-            if (currentVersion == default)
+            try
             {
-                this.logger.LogWarning("[Wholesale] Couldn't get current version");
+                currentVersion = await this.wholesale.GetCurrentVersion();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogWarning(ex, "[Wholesale] Couldn't get current version");
                 return;
             }
 
@@ -86,11 +90,15 @@ namespace FibraClickSocial.Services
 
         private async Task CheckFiberCop()
         {
-            string currentCount = await this.fibercop.GetCurrentCount();
+            string currentCount;
 
-            if (currentCount == default)
+            try
             {
-                this.logger.LogWarning("[FiberCop] Couldn't get current count");
+                currentCount = await this.fibercop.GetCurrentCount();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogWarning(ex, "[FiberCop] Couldn't get current count");
                 return;
             }
 

@@ -29,11 +29,7 @@ namespace FibraClickSocial.Services
         public async Task<string> GetCurrentCount()
         {
             HttpResponseMessage resp = await this.client.GetAsync(this.config.Url);
-
-            if (!resp.IsSuccessStatusCode)
-            {
-                return default;
-            }
+            resp.EnsureSuccessStatusCode();
 
             string content = await resp.Content.ReadAsStringAsync();
 
@@ -41,7 +37,7 @@ namespace FibraClickSocial.Services
 
             if (matches.Count == 0)
             {
-                return default;
+                throw new Exception("No matching line found");
             }
             else
             {

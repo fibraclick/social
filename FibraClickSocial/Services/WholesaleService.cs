@@ -17,7 +17,7 @@ namespace FibraClickSocial.Services
         private readonly WholesaleConfiguration config;
 
         public WholesaleService(HttpClient client,
-                                IOptions<WholesaleConfiguration> options)
+            IOptions<WholesaleConfiguration> options)
         {
             this.client = client;
             this.config = options.Value;
@@ -26,16 +26,11 @@ namespace FibraClickSocial.Services
         public async Task<DateTimeOffset> GetCurrentVersion()
         {
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Head, this.config.Url);
-            HttpResponseMessage resp = await this.client.SendAsync(req);
 
-            if (resp.StatusCode == HttpStatusCode.OK)
-            {
-                return resp.Content.Headers.LastModified.GetValueOrDefault();
-            }
-            else
-            {
-                return default;
-            }
+            HttpResponseMessage resp = await this.client.SendAsync(req);
+            resp.EnsureSuccessStatusCode();
+
+            return resp.Content.Headers.LastModified.GetValueOrDefault();
         }
 
         public async Task<DateTimeOffset> GetPreviousVersion(DateTimeOffset fallback)
