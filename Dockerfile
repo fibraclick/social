@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /app
 
 # Copy sln and csproj and try to restore dependencies
@@ -15,7 +15,7 @@ FROM build AS publish
 WORKDIR /app/FibraClickSocial
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine AS runtime
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
 RUN apk add --no-cache icu-libs
