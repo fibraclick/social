@@ -1,7 +1,6 @@
 name: Deploy
 
-on:
-  workflow-dispatch:
+on: workflow-dispatch
 
 jobs:
   build-and-push:
