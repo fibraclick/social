@@ -1,4 +1,4 @@
-name: Docker build (dry-run)
+name: Build
 
 on:
   push:
