@@ -48,7 +48,7 @@ jobs:
     - name: Prepare deploy
       run: |
         mkdir -p ~/.ssh/
-        echo "${{ secrets.HOST_KEY }}" > ~/.ssh/known_hosts
+        echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
         echo "${{ secrets.KEY }}" > ~/.ssh/key
         chmod 0600 ~/.ssh/*
 
