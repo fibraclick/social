@@ -51,11 +51,10 @@ jobs:
         echo "${{ secrets.HOST_KEY }}" > ~/.ssh/known_hosts
         echo "${{ secrets.KEY }}" > ~/.ssh/key
         chmod 0600 ~/.ssh/*
-        ssh-add ~/.ssh/*
 
     - name: Deploy
       run: |
         export DOCKER_REGISTRY_NAME="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
         export DOCKER_REGISTRY_TOKEN="$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }})"
 
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} DOCKER_REGISTRY_TOKEN=$DOCKER_REGISTRY_TOKEN DOCKER_REGISTRY_NAME=$DOCKER_REGISTRY_NAME DOCKER_TAG=${{ github.sha }} CONTAINER_NAME=${{ secrets.AWS_REPOSITORY }} 'bash -s' < .github/workflows/deploy.sh
+        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ~/.ssh/key DOCKER_REGISTRY_TOKEN=$DOCKER_REGISTRY_TOKEN DOCKER_REGISTRY_NAME=$DOCKER_REGISTRY_NAME DOCKER_TAG=${{ github.sha }} CONTAINER_NAME=${{ secrets.AWS_REPOSITORY }} 'bash -s' < .github/workflows/deploy.sh
