@@ -62,20 +62,25 @@
                 @"📣 *FiberCop ha aggiornato la mappa con i cantieri FTTH*
 
 🗓 {0}
-👉 fibercop.it/cantieri-in-corso";
+👉 fibercop.it/cantieri-in-corso
+
+✳️ Domande? Chiedi sul forum: forum.fibra.click";
 
             public const string Facebook =
                 @"📣 #FiberCop ha aggiornato la mappa con i cantieri #FTTH #fibra
 
 🗓 {0}
-👉 https://www.fibercop.it.it/cantieri-in-corso";
+👉 https://www.fibercop.it.it/cantieri-in-corso
+
+✳️ Domande? Chiedi sul forum: https://forum.fibra.click";
 
             public const string Twitter =
                 @"📣 #FiberCop ha aggiornato la mappa con i cantieri #FTTH #fibra
 
 🗓 {0}
+👉 https://www.fibercop.it/cantieri-in-corso
 
-https://www.fibercop.it/cantieri-in-corso";  
+✳️ Domande? Chiedi sul forum: https://forum.fibra.click";  
         }
     }
 }
