@@ -33,7 +33,7 @@ namespace FibraClickSocial.Services
 
             string content = await resp.Content.ReadAsStringAsync();
 
-            MatchCollection matches = Regex.Matches(content, "{lat: \\d+\\.\\d+,lng: \\d+\\.\\d+ }");
+            MatchCollection matches = Regex.Matches(content, "lat: \\d+\\.\\d+");
 
             if (matches.Count == 0)
             {
