@@ -2,11 +2,13 @@
 using FibraClickSocial.Interfaces;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using PlainHttp;
 
 namespace FibraClickSocial.Services
 {
@@ -28,12 +30,18 @@ namespace FibraClickSocial.Services
 
         public async Task<string> GetCurrentCount()
         {
-            HttpResponseMessage resp = await this.client.GetAsync(this.config.Url);
-            resp.EnsureSuccessStatusCode();
+            IHttpRequest req = new HttpRequest(this.config.Url)
+            {
+                Headers = new Dictionary<string, string>()
+                {
+                    { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0" }
+                }
+            };
 
-            string content = await resp.Content.ReadAsStringAsync();
+            IHttpResponse resp = await req.SendAsync();
+            resp.Message.EnsureSuccessStatusCode();
 
-            MatchCollection matches = Regex.Matches(content, "lat: \\d+\\.\\d+");
+            MatchCollection matches = Regex.Matches(resp.Body, "lat: \\d+\\.\\d+");
 
             if (matches.Count == 0)
             {
